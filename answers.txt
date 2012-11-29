@@ -1,0 +1,19 @@
+Chris Shifflett
+1.  The processor starts executing some 32-bit code at address 0x7c2d; "ljmp $PROT_MODE_CSEG, $protcseg" causes it to switch into 32 bit mode.
+2. The last instruction of the boot loader is "jmp 7d88 <bootmain_0x77>", which passes control to the kernel's code whereas the first instruction is "<_start-0xc>".
+3. 0xf0100000
+4. It loads sectors with a for loop iterating n times, where n = ELFHDR->e_phnum.
+5. They are different after the boot loader enters the kernel because the kernel's code has been loaded into 0x00100000.
+6. After entering the kernel, 0x00100000 contains the kernel's .text section.
+7. I'm not certain which GDT this question is referring to... After the bootstrap GDT, the first code to depend on a "high" address is an or instruction at 0x7cb1. The first code to depend on the *kernel's* GDT, however, is "movl $DATA_SEL, %eax" at 0xf010001c.
+8. console.c defines cputchar as a wrapper for it's cons_putc function; printf.c then uses cputchar in its putch function to print a character to the console.
+9. part 1) If the cursor reaches the bottom of the console, move everything up, write a new blank line, and move the cursor up one line so it remains on the screen.
+   part 2) fmt points to the string "x %d, y %x, z %d\n"; ap points to the argument list, which consists of the variables x, y, and z.
+10. part 1) "HE110 World".
+    part 2) If the x86 were big-endian, i should be 0x726c6400 to yield the same output.
+11. Some random value will be printed after "y=. You're trying to access a value that's past the end of the args list, and you end up reading an unrelated chunk of memory.
+12. You could allow cprintf to retain its flexibility by changing the interface so that arguments are given in reverse order, where the last element in the argument list is slotted into the first variable in the string. 
+13. The kernel reserves space for its stack by initializing the stack pointer to the top of its desired range, and allowing the stack to grow "down" instead of "up".
+14. I'm not sure how to do this. 
+
+
